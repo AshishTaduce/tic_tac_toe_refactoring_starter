@@ -20,9 +20,11 @@ class _TicTacToePageState extends State<TicTacToePage> {
   void winnerPopup() {
     if (winnerCheck(board)) {
       currentPlayer = "${currentPlayer.substring(7, 9)} Won";
-    } else if (fullBoard(board)) {
+    }
+    else if (fullBoard(board)) {
       currentPlayer = "draw";
-    } else {
+    }
+    else {
       changePlayer(currentPlayer);
     }
   }
@@ -77,34 +79,13 @@ class _TicTacToePageState extends State<TicTacToePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Expanded(
-                            child: OneBox(
-                              buttonChild: board[0][0],
-                              colors: colorBoard[0][0],
-                              onPressed: () {
-                                updateBox(0, 0);
-                                setState(() {});
-                              },
-                            ),
+                            child: buildCell(0,0),
                           ),
                           Expanded(
-                            child: OneBox(
-                              buttonChild: board[0][1],
-                              colors: colorBoard[0][1],
-                              onPressed: () {
-                                updateBox(0, 1);
-                                setState(() {});
-                              },
-                            ),
+                            child: buildCell(0,1),
                           ),
                           Expanded(
-                            child: OneBox(
-                              buttonChild: board[0][2],
-                              colors: colorBoard[0][2],
-                              onPressed: () {
-                                updateBox(0, 2);
-                                setState(() {});
-                              },
-                            ),
+                            child: buildCell(0,2),
                           )
                         ],
                       ),
@@ -115,34 +96,13 @@ class _TicTacToePageState extends State<TicTacToePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Expanded(
-                            child: OneBox(
-                              buttonChild: board[1][0],
-                              colors: colorBoard[1][0],
-                              onPressed: () {
-                                updateBox(1, 0);
-                                setState(() {});
-                              },
-                            ),
+                            child: buildCell(1,0),
                           ),
                           Expanded(
-                            child: OneBox(
-                              buttonChild: board[1][1],
-                              colors: colorBoard[1][1],
-                              onPressed: () {
-                                updateBox(1, 1);
-                                setState(() {});
-                              },
-                            ),
+                            child: buildCell(1,1),
                           ),
                           Expanded(
-                            child: OneBox(
-                              buttonChild: board[1][2],
-                              colors: colorBoard[1][2],
-                              onPressed: () {
-                                updateBox(1, 2);
-                                setState(() {});
-                              },
-                            ),
+                            child: buildCell(1,2),
                           )
                         ],
                       ),
@@ -153,34 +113,13 @@ class _TicTacToePageState extends State<TicTacToePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Expanded(
-                            child: OneBox(
-                              buttonChild: board[2][0],
-                              colors: colorBoard[2][0],
-                              onPressed: () {
-                                updateBox(2, 0);
-                                setState(() {});
-                              },
-                            ),
+                            child: buildCell(2,0),
                           ),
                           Expanded(
-                            child: OneBox(
-                              buttonChild: board[2][1],
-                              colors: colorBoard[2][1],
-                              onPressed: () {
-                                updateBox(2, 1);
-                                setState(() {});
-                              },
-                            ),
+                            child: buildCell(2,1),
                           ),
                           Expanded(
-                            child: OneBox(
-                              buttonChild: board[2][2],
-                              colors: colorBoard[2][2],
-                              onPressed: () {
-                                updateBox(2, 2);
-                                setState(() {});
-                              },
-                            ),
+                            child: buildCell(2,2),
                           )
                         ],
                       ),
@@ -236,35 +175,12 @@ class _TicTacToePageState extends State<TicTacToePage> {
       winnerPopup();
     }
   }
-}
 
-class OneBox extends StatelessWidget {
-  final Widget buttonChild;
-  final Function onPressed;
-  final Color colors;
-  OneBox(
-      {this.buttonChild = const Text(''),
-      this.onPressed,
-      this.colors = Colors.white24});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: FlatButton(
-        child: AnimatedOpacity(
-            duration: Duration(milliseconds: 600),
-            opacity: buttonChild == null ? 0.0 : 1.0,
-            child: buttonChild),
-        onPressed: onPressed,
-      ),
-      margin: EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: colors,
-        borderRadius: BorderRadius.all(
-          Radius.circular(14),
-        ),
-      ),
-    );
+
   }
-}
+
+
+
+
+
