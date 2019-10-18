@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
-List<List<Icon>> board = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null]
-];
+enum Token{
+ True,
+  False,
+}
+
+
+
+List<List<Token>> board = [
+  [Token.False, Token.False, Token.False],
+  [Token.False, Token.False, Token.False],
+  [Token.False, Token.False, Token.False],];
 
 // initial list of colors assigned to boxes on board
 List<List<Color>> colorBoard = [
@@ -55,21 +61,16 @@ void gameReset() {
 }
 
 bool fullBoard(List<List<Icon>> board) {
-  bool full = false;
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
-      if (board[i][j] == xIcon)
-        full = true;
-      else if (board[i][j] == oIcon)
-        full = true;
-      else
-        full = false;
+      if (board[i][j] == null)
+        return false;
     }
   }
-  return full;
+  return true;
 }
 
-bool winnerCheck(List<List<Icon>> board) {
+bool winnerCheck(List<List<Token>> board) {
   for (int i = 0; i < 3; i++) {
     if (board[i][0] == xIcon && board[i][1] == xIcon && board[i][2] == xIcon) {
       colorBoard[i][0] = winningColor;
@@ -113,14 +114,13 @@ bool winnerCheck(List<List<Icon>> board) {
     colorBoard[1][1] = winningColor;
     colorBoard[2][2] = winningColor;
     return true;
-  } else if (board[0][2] == oIcon &&
-      board[1][1] == oIcon &&
-      board[2][0] == oIcon) {
+  } else if (board[0][2] == oIcon && board[1][1] == oIcon && board[2][0] == oIcon) {
     colorBoard[0][2] = winningColor;
     colorBoard[1][1] = winningColor;
     colorBoard[2][0] = winningColor;
     return true;
-  } else {
+  }
+  else {
     return false;
   }
 }
