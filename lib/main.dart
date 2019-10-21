@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'gamelogic.dart';
 
-//import 'package:flutter/animation.dart';
-
 void main() {
   runApp(MaterialApp(
     home: TicTacToePage(),
@@ -25,7 +23,7 @@ class _TicTacToePageState extends State<TicTacToePage> {
         color: Colors.white,
       );
     }
-    if (t == token.x) {
+    else if (t == token.x) {
       return Icon(
         Icons.close,
         size: 80,
@@ -41,15 +39,6 @@ class _TicTacToePageState extends State<TicTacToePage> {
         : Colors.white.withAlpha(150);
   }
 
-  void winnerPopup() {
-    if (winnerCheck(board)) {
-      currentPlayer = "${currentPlayer.substring(7, 9)} Won";
-    } else if (fullBoard(board)) {
-      currentPlayer = "draw";
-    } else {
-      changePlayer(currentPlayer);
-    }
-  }
 
   Widget singleExpandedBox(int row, int col) {
     return Expanded(
@@ -109,7 +98,7 @@ class _TicTacToePageState extends State<TicTacToePage> {
               child: Container(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  "$currentPlayer",
+                  "${getCurrentStatus(board)}",
                   style: TextStyle(
                       fontSize: 24,
                       color: Colors.white.withAlpha(150),
@@ -169,12 +158,12 @@ class _TicTacToePageState extends State<TicTacToePage> {
 
   void updateBox(int r, int c) {
     if (legitMove(board[r][c])) {
-      if (currentPlayer == 'Player X Move') {
+      if (currentPlayer == token.x) {
         board[r][c] = token.x;
       } else {
         board[r][c] = token.o;
       }
-      winnerPopup();
+      changePlayerIfGameNotOver();
     }
   }
 }
@@ -190,20 +179,20 @@ class OneBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: FlatButton(
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        alignment: Alignment.center,
         child: AnimatedOpacity(
-            duration: Duration(milliseconds: 600),
+            duration: Duration(milliseconds: 300),
             opacity: buttonChild == null ? 0.0 : 1.0,
             child: buttonChild),
-        onPressed: onPressed,
-      ),
-      margin: EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: colors,
-        borderRadius: BorderRadius.all(
-          Radius.circular(16),
+        margin: EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: colors,
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
         ),
       ),
     );
