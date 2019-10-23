@@ -1,20 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'gamelogic.dart';
-
 void main() {
   runApp(MaterialApp(
     home: TicTacToePage(),
   ));
 }
-
 class TicTacToePage extends StatefulWidget {
   @override
   _TicTacToePageState createState() => _TicTacToePageState();
 }
-
-class _TicTacToePageState extends State<TicTacToePage> {
+class _TicTacToePageState extends State<TicTacToePage> with SingleTickerProviderStateMixin{
   Widget getIcon(token t) {
     if (t == token.o) {
       return Icon(
@@ -32,14 +31,11 @@ class _TicTacToePageState extends State<TicTacToePage> {
     } else
       return null;
   }
-
   Color getColor(int row, int col) {
     return colorBoard[row][col]
         ? Colors.green.withAlpha(255)
         : Colors.white.withAlpha(150);
   }
-
-
   Widget singleExpandedBox(int row, int col) {
     return Expanded(
       child: OneBox(
@@ -52,7 +48,6 @@ class _TicTacToePageState extends State<TicTacToePage> {
       ),
     );
   }
-
   Widget expandedRow(int row) {
     return Expanded(
       child: Row(
@@ -66,9 +61,36 @@ class _TicTacToePageState extends State<TicTacToePage> {
       ),
     );
   }
-
+  AnimationController controller;
   @override
+
+  void initState() {
+    controller = AnimationController(
+      duration: Duration(milliseconds: 700), vsync: this, value: 1.0,
+    );
+    controller.addStatusListener((status){
+      if (status == AnimationStatus.completed) {
+        setState(() {
+        });
+        controller.reverse();
+      }
+      else if (status == AnimationStatus.dismissed) {
+        controller.forward();
+        setState(() {
+        });
+      }
+    });
+    controller.addListener((){
+      setState(() {
+
+      });
+    });
+    controller.forward();
+    super.initState();
+  }
+  Color playerColor = Colors.white.withAlpha(150);
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Color(0xFFD6AA7C),
       body: Container(
@@ -97,11 +119,20 @@ class _TicTacToePageState extends State<TicTacToePage> {
               flex: 1,
               child: Container(
                 alignment: Alignment.topCenter,
-                child: Text(
+                child: winnerCheck(board) ? ScaleTransition(
+                  scale : Tween(begin: 1.5, end: 2.5).animate(controller),
+                  child: Text(
+                    "${getCurrentStatus(board)}",
+                    style: TextStyle(
+                        fontSize: 24,
+                        color: winnerCheck(board) ? ColorTween(begin: Colors.white, end: Colors.orange).transform(controller.value) : Colors.white,
+                        fontFamily: 'Quicksand'),
+                  ),
+                ) : Text(
                   "${getCurrentStatus(board)}",
                   style: TextStyle(
                       fontSize: 24,
-                      color: Colors.white.withAlpha(150),
+                      color: winnerCheck(board) ? ColorTween(begin: Colors.white, end: Colors.orange).transform(controller.value) : Colors.white,
                       fontFamily: 'Quicksand'),
                 ),
               ),
@@ -167,29 +198,68 @@ class _TicTacToePageState extends State<TicTacToePage> {
     }
   }
 }
-
-class OneBox extends StatelessWidget {
-  final Widget buttonChild;
-  final Function onPressed;
-  final Color colors;
-  OneBox(
-      {this.buttonChild = const Text(''),
-        this.onPressed,
-        this.colors = Colors.white24});
+class OneBox extends StatefulWidget {
+  final Widget buttonChild; final Function onPressed; final Color colors;
+  OneBox({this.buttonChild = const Text(''), this.onPressed, this.colors = Colors.white24});
 
   @override
+  _OneBoxState createState() => _OneBoxState();
   Widget build(BuildContext context) {
+    // TODO: implement build
+    return null;
+  }
+  // TODO: implement context
+  BuildContext get context => null;
+  void deactivate() {
+    // TODO: implement deactivate
+  }
+  void didUpdateWidget(StatefulWidget oldWidget) {
+    // TODO: implement didUpdateWidget
+  }
+  void initState() {
+    // TODO: implement initState
+  }// TODO: implement mounted
+  bool get mounted => null;
+  void reassemble() {
+    // TODO: implement reassemble
+  }
+  void setState(fn) {
+    // TODO: implement setState
+  }
+  // TODO: implement widget
+  StatefulWidget get widget => null;
+}
+class _OneBoxState extends State<OneBox> with SingleTickerProviderStateMixin{
+
+  AnimationController controller;
+
+  @override
+  void initState() {
+    controller = AnimationController(
+      duration: Duration(milliseconds: 800), vsync: this, value: 0.0,
+    );
+    super.initState();
+  }
+  Widget build(BuildContext context) {
+    CurvedAnimation animation1 = CurvedAnimation(parent: controller, curve: Curves.easeInExpo);
+    CurvedAnimation animation2 = CurvedAnimation(parent: controller, curve: Curves.bounceOut);
     return GestureDetector(
-      onTap: onPressed,
+      onTap: (){
+        widget.onPressed();
+        controller.forward();
+
+      },
       child: Container(
         alignment: Alignment.center,
-        child: AnimatedOpacity(
-            duration: Duration(milliseconds: 300),
-            opacity: buttonChild == null ? 0.0 : 1.0,
-            child: buttonChild),
+        child: FadeTransition(
+            opacity: controller,
+            child: ScaleTransition(
+              child: widget.buttonChild,
+            scale: Tween(begin: 2.0, end: 1.0).animate(animation2),
+            )),
         margin: EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: colors,
+          color: widget.colors,
           borderRadius: BorderRadius.all(
             Radius.circular(16),
           ),
