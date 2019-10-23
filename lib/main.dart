@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -205,28 +203,10 @@ class OneBox extends StatefulWidget {
   @override
   _OneBoxState createState() => _OneBoxState();
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return null;
+
   }
-  // TODO: implement context
   BuildContext get context => null;
-  void deactivate() {
-    // TODO: implement deactivate
-  }
-  void didUpdateWidget(StatefulWidget oldWidget) {
-    // TODO: implement didUpdateWidget
-  }
-  void initState() {
-    // TODO: implement initState
-  }// TODO: implement mounted
-  bool get mounted => null;
-  void reassemble() {
-    // TODO: implement reassemble
-  }
-  void setState(fn) {
-    // TODO: implement setState
-  }
-  // TODO: implement widget
+
   StatefulWidget get widget => null;
 }
 class _OneBoxState extends State<OneBox> with SingleTickerProviderStateMixin{
