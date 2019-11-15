@@ -16,24 +16,25 @@ List<List<bool>> colorBoard = [
   [false, false, false]
 ];
 
-//  takes an icon, checks if
 bool legitMove(token t) {
-  return t == null && !winnerCheck(board);
+    return t == null && !winnerCheck(board);
 }
 
-//default parameters
-token currentPlayer = token.x; //X will always be player 1
+token currentPlayer = token.x;
+//changePlayer(token player) {
+//  if (player == token.x) {
+//    currentPlayer = token.o;
+//  } else if (player == token.o) {
+//    currentPlayer = token.x;
+//  }
+//}
+//
+//void changePlayerIfGameNotOver() {
+//  if (!winnerCheck(board)&& !fullBoard(board)){
+//    changePlayer(currentPlayer);
+//  }
+//}
 
-//function to change player based on currentPlayer value which is a string,
-changePlayer(token player) {
-  if (player == token.x) {
-    currentPlayer = token.o;
-  } else if (player == token.o) {
-    currentPlayer = token.x;
-  }
-}
-
-//Color winningColor = Colors.yellow.withOpacity(0.2);
 void gameReset() {
   board = [
     [null, null, null],
@@ -47,13 +48,6 @@ void gameReset() {
   ];
   currentPlayer = token.x;
 }
-
-void changePlayerIfGameNotOver() {
-  if (!winnerCheck(board)&& !fullBoard(board)){
-    changePlayer(currentPlayer);
-  }
-}
-
 
 bool fullBoard(List<List<token>> board) {
   for (int i = 0; i < 3; i++) {
@@ -142,16 +136,27 @@ String getCurrentStatus(List<List<token>> board){
     return 'Player x won';
   }
   else if (winnerCheck(board) && currentPlayer == token.o){
-    return 'Player o won';
+    return 'Computer won';
   }
   else if (currentPlayer == token.x && !fullBoard(board)){
     return 'Player x move';
   }
   else  if (currentPlayer == token.o && !fullBoard(board)) {
-    return 'Player o move';
+    return 'Computer move';
   }
   else  if (fullBoard(board)){
     return 'Draw';
   }
 
 }
+
+int aiMove(List<List<int>> board){
+
+}
+
+int scorePredictor(){
+//  if(){
+//
+//  }
+}
+
