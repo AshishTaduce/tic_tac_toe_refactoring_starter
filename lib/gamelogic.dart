@@ -1,3 +1,4 @@
+
 enum token {
   x,
   o,
@@ -9,7 +10,8 @@ token currentPlayer = token.x;
 bool isEnd;
 
 void updateScore(token currentPlayer) {
-  isEnd ? currentPlayer == token.x ? playerScore++ : computerScore++
+  isEnd
+      ? currentPlayer == token.x ? playerScore++ : computerScore++
       : isEnd = false;
 }
 
@@ -27,7 +29,7 @@ List<List<bool>> colorBoard = [
 ];
 
 bool legitMove(token t) {
-    return t == null && !winnerCheck(board, currentPlayer);
+  return t == null && !winnerCheck(board, currentPlayer);
 }
 
 //changePlayer(token player) {
@@ -57,10 +59,11 @@ void gameReset() {
   ];
   currentPlayer = token.x;
   isEnd = true;
+  playerScore= 0;
+  computerScore = 0;
 }
 
 bool fullBoard(List<List<token>> board) {
-
   return board.every((List row) => row.every((cell) => (cell != null)));
   // for (int i = 0; i < 3; i++) {
 //    for (int j = 0; j < 3; j++) {
@@ -73,36 +76,32 @@ bool fullBoard(List<List<token>> board) {
 }
 
 bool winnerCheck(List<List<token>> board, token currentPlayer) {
-  for (int i = 0; i < 3; i++){
-    for(int j =0; j < 3; j++){
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
       if (board[i][0] == currentPlayer &&
           board[i][1] == currentPlayer &&
           board[i][2] == currentPlayer) {
         colorBoard[i][0] = true;
         colorBoard[i][1] = true;
         colorBoard[i][2] = true;
-        updateScore(currentPlayer);
         return true;
       }
     }
   }
 
-
-
-
   for (int i = 0; i < 3; i++) {
-    if (board[i][0] == token.x &&
-        board[i][1] == token.x &&
-        board[i][2] == token.x) {
+    if (board[i][0] == currentPlayer &&
+        board[i][1] == currentPlayer &&
+        board[i][2] == currentPlayer) {
       colorBoard[i][0] = true;
       colorBoard[i][1] = true;
       colorBoard[i][2] = true;
       playerScore++;
       return true;
     }
-    if (board[0][i] == token.x &&
-        board[1][i] == token.x &&
-        board[2][i] == token.x) {
+    if (board[0][i] == currentPlayer &&
+        board[1][i] == currentPlayer &&
+        board[2][i] == currentPlayer) {
       colorBoard[0][i] = true;
       colorBoard[1][i] = true;
       colorBoard[2][i] = true;
@@ -162,32 +161,30 @@ bool winnerCheck(List<List<token>> board, token currentPlayer) {
   }
 }
 
-
-
-String getCurrentStatus(List<List<token>> board){
-  if (winnerCheck(board, currentPlayer) && currentPlayer == token.x){
+String getCurrentStatus(List<List<token>> board) {
+  if (winnerCheck(board, currentPlayer) && currentPlayer == token.x) {
     return 'Player x won';
-  }
-  else if (winnerCheck(board, currentPlayer) && currentPlayer == token.o){
+  } else if (winnerCheck(board, currentPlayer) && currentPlayer == token.o) {
     return 'Computer won';
-  }
-  else if (currentPlayer == token.x && !fullBoard(board)){
+  } else if (currentPlayer == token.x && !fullBoard(board)) {
     return 'Player x move';
-  }
-  else  if (currentPlayer == token.o && !fullBoard(board)) {
+  } else if (currentPlayer == token.o && !fullBoard(board)) {
     return 'Computer move';
-  }
-  else  if (fullBoard(board)){
+  } else if (fullBoard(board)) {
     return 'Draw';
   }
-
 }
 
-int aiMove(List<List<int>> board){
+//int aiMove(List<List<int>> board, int row, int col) {
+//  List<List<dynamic>> copyBoard = board;
+//      updateBoard(row, col);
+//      if (winnerCheck(copyBoard, currentPlayer) && legitMove(currentPlayer)){
+//        return 2;
+//  }
+//  return 1;
+//}
 
-}
-
-int scorePredictor(){
+int scorePredictor() {
   //TODO Im[lement the AI
 //  if(){
 //

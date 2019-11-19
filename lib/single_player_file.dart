@@ -118,6 +118,8 @@ class _TicTacToePageState extends State<TicTacToePage>
         ? Colors.green.withAlpha(255)
         : Colors.transparent;
   }
+
+  //TODO make this work, 
 bool isPlaying = false;
   Widget singleExpandedBox(int row, int col) {
     return Expanded(
@@ -183,6 +185,7 @@ bool isPlaying = false;
   }
 
   Color playerColor = Colors.white.withAlpha(150);
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFD6AA7C),
@@ -374,10 +377,8 @@ bool isPlaying = false;
     if (legitMove(board[r][c])) {
       if (currentPlayer == token.x) {
         board[r][c] = token.x;
-
         setState(() {});
       }
-      //changePlayerIfGameNotOver();
     }
   }
 
