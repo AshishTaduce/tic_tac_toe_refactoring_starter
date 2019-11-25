@@ -1,9 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:tic_tac_toe_starter/single_player_file.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_animations/simple_animations.dart';
+import 'package:tic_tac_toe_starter/custom_widgets.dart';
+
 
 void main() {
   runApp(
@@ -13,92 +13,7 @@ void main() {
   );
 }
 
-class AnimatedBackground extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final tween = MultiTrackTween([
-      Track("color1").add(Duration(seconds: 3),
-          ColorTween(begin: Color(0xffD38312), end: Colors.red.shade900)),
-      Track("color2").add(Duration(seconds: 3),
-          ColorTween(begin: Color(0xffA83279), end: Colors.blue.shade600))
-    ]);
 
-    return ControlledAnimation(
-      playback: Playback.MIRROR,
-      tween: tween,
-      duration: tween.duration,
-      builder: (context, animation) {
-        return Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [animation["color1"], animation["color2"]])),
-        );
-      },
-    );
-  }
-}
-
-class AnimatedWave extends StatelessWidget {
-  final double height;
-  final double speed;
-  final double offset;
-
-  AnimatedWave({this.height, this.speed, this.offset = 0.0});
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return Container(
-        height: height,
-        width: constraints.biggest.width,
-        child: ControlledAnimation(
-            playback: Playback.LOOP,
-            duration: Duration(milliseconds: (5000 / speed).round()),
-            tween: Tween(begin: 0.0, end: 2 * pi),
-            builder: (context, value) {
-              return CustomPaint(
-                foregroundPainter: CurvePainter(value + offset),
-              );
-            }),
-      );
-    });
-  }
-}
-
-class CurvePainter extends CustomPainter {
-  final double value;
-
-  CurvePainter(this.value);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final white = Paint()..color = Colors.white.withAlpha(60);
-    final path = Path();
-
-    final y1 = sin(value);
-    final y2 = sin(value + pi / 2);
-    final y3 = sin(value + pi);
-
-    final startPointY = size.height * (0.5 + 0.4 * y1);
-    final controlPointY = size.height * (0.5 + 0.4 * y2);
-    final endPointY = size.height * (0.5 + 0.4 * y3);
-
-    path.moveTo(size.width * 0, startPointY);
-    path.quadraticBezierTo(
-        size.width * 0.5, controlPointY, size.width, endPointY);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
-    canvas.drawPath(path, white);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-}
 
 class FrontPage extends StatefulWidget {
   @override
@@ -165,31 +80,85 @@ class _FrontPageState extends State<FrontPage> {
                             height: size.height * 0.2,
                           ),
                           Center(
-                            child: ButtonTheme(
-                              minWidth: 240,
-                              height: 80,
-                              child: RaisedButton(
-                                elevation: 0.0,
-                                shape: RoundedRectangleBorder(
-                                  side:
-                                      BorderSide(color: Colors.white, width: 4),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(100)),
-                                ),
-                                color: Colors.transparent,
-                                onPressed: () {
-                                  hideNameInput
-                                      ? hideNameInput = false
-                                      : hideNameInput = true;
-                                  setState(() {});
-                                },
-                                child: Text(
-                                  "Player VS Computer",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontFamily: 'Quicksand',
+                            child: AnimatedSwitcher(
+                              duration: Duration(milliseconds: 700),
+                              child: ButtonTheme(
+                                minWidth: 240,
+                                height: 80,
+                                child: hideNameInput
+                                    ? RaisedButton(
+                                  elevation: 0.0,
+                                  shape: RoundedRectangleBorder(
+                                    side:
+                                        BorderSide(color: Colors.white, width: 4),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(100)),
                                   ),
+                                  color: Colors.transparent,
+                                  onPressed: () {
+                                    hideNameInput
+                                        ? hideNameInput = false
+                                        : hideNameInput = true;
+                                    setState(() {});
+                                  },
+                                  child: Text(
+                                    "Player VS Computer",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontFamily: 'Quicksand',
+                                    ),
+                                  ),
+                                )
+                                    : Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 85,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16, 0, 8, 0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                  width: 4.0,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          child: TextFormField(
+                                            style: new TextStyle(
+                                              fontSize: 34,
+                                              color: Colors.white,
+                                              fontFamily: 'Quicksand',
+                                            ),
+                                            cursorColor: Colors.white,
+                                            cursorRadius:
+                                            Radius.circular(8),
+                                            cursorWidth: 32,
+                                            autofocus: true,
+                                            controller: _controller,
+                                            // ...
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 15,
+                                      child: IconButton(
+                                        iconSize: 48,
+                                        icon: Icon(
+                                          Icons.check_circle,
+                                          color: Colors.white,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).push(_createRoute(_controller.text));
+                                        },
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
@@ -200,11 +169,11 @@ class _FrontPageState extends State<FrontPage> {
                           Center(
                             child: AnimatedSwitcher(
                               duration: Duration(milliseconds: 100),
-                              child: hideNameInput
-                                  ? ButtonTheme(
+                              child: ButtonTheme(
                                       minWidth: 240,
                                       height: 80,
-                                      child: RaisedButton(
+                                      child: hideNameInput
+                                          ? RaisedButton(
                                         elevation: 0.0,
                                         shape: RoundedRectangleBorder(
                                           side: BorderSide(
@@ -222,64 +191,30 @@ class _FrontPageState extends State<FrontPage> {
                                             fontFamily: 'Quicksand',
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 85,
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                16, 0, 8, 0),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.transparent,
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                      width: 4.0,
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              child: TextFormField(
-                                                style: new TextStyle(
-                                                  fontSize: 34,
-                                                  color: Colors.white,
-                                                  fontFamily: 'Quicksand',
-                                                ),
-                                                //decoration: new InputDecoration(fillColor: Colors.orange, filled: true),
-                                                cursorColor: Colors.white,
-                                                cursorRadius:
-                                                    Radius.circular(8),
-                                                cursorWidth: 32,
-                                                autofocus: true,
-                                                controller: _controller,
-                                                // ...
-                                              ),
-                                            ),
+                                      )
+
+                                          : RaisedButton(
+                                        elevation: 0.0,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color: Colors.white, width: 4),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(100)),
+                                        ),
+                                        color: Colors.transparent,
+                                        onPressed: () {
+                                          hideNameInput=true;
+                                          setState(() {});
+                                        },
+                                        child: Text(
+                                          "Back",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontFamily: 'Quicksand',
                                           ),
                                         ),
-                                        Expanded(
-                                          flex: 15,
-                                          child: IconButton(
-                                            iconSize: 48,
-                                            icon: Icon(
-                                              Icons.check_circle,
-                                              color: Colors.white,
-                                            ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          TicTacToePage(
-                                                              _controller
-                                                                  .text)));
-                                            },
-                                          ),
-                                        )
-                                      ],
+                                      )
                                     ),
                             ),
                           ),
@@ -326,4 +261,23 @@ class _FrontPageState extends State<FrontPage> {
       ),
     );
   }
+}
+
+Route _createRoute(String playerName) {
+  return PageRouteBuilder(
+
+    pageBuilder: (context, animation, secondaryAnimation) => TicTacToePage(playerName),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      var begin = Offset(0.0, 1.0);
+      var end = Offset.zero;
+      var curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return FadeTransition(
+        opacity: animation,
+        child: child,
+      );
+    },
+  );
 }
