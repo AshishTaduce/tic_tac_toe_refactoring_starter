@@ -19,7 +19,6 @@ void main() {
     "test checkgamestaus for change of player",
     () {
       expect(currentPlayer, token.x);
-      changePlayerIfGameNotOver();
       expect(currentPlayer, token.o);
     },
   );
@@ -35,7 +34,6 @@ void main() {
         [token.x, token.o, token.x]
       ];
 
-      changePlayerIfGameNotOver();
       expect(currentPlayer, token.o);
 
     },

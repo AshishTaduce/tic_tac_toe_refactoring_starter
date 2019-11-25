@@ -9,7 +9,7 @@ int playerScore = 0;
 token currentPlayer = token.x;
 bool isEnd = false;
 bool scoreUpdated = false;
-
+bool isPlaying = false;
 List<List<token>> board = [
   [null, null, null],
   [null, null, null],

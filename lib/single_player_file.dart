@@ -204,9 +204,6 @@ bool isPlaying = false;
               Colors.blueGrey,
             ],
           ),
-
-          // image: DecorationImage(
-          // image: NetworkImage('https://www.elsetge.cat/myimg/f/73-736820_dark-blue-green-gradient-4k-iphone-xs-max.jpg'), fit: BoxFit.cover)
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -377,6 +374,7 @@ bool isPlaying = false;
     if (legitMove(board[r][c])) {
       if (currentPlayer == token.x) {
         board[r][c] = token.x;
+        isPlaying=true;
         setState(() {});
       }
     }
