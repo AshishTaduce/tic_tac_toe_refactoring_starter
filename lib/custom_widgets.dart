@@ -85,6 +85,7 @@ class AnimatedWave extends StatelessWidget {
             playback: Playback.LOOP,
             duration: Duration(milliseconds: (5000 / speed).round()),
             tween: Tween(begin: 0.0, end: 2 * pi),
+
             builder: (context, value) {
               return CustomPaint(
                 foregroundPainter: CurvePainter(value + offset),
@@ -115,7 +116,8 @@ class CurvePainter extends CustomPainter {
 
     path.moveTo(size.width * 0, startPointY);
     path.quadraticBezierTo(
-        size.width * 0.5, controlPointY, size.width, endPointY);
+        size.width * 0.5, controlPointY, size.width, endPointY,
+    );
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
     path.close();

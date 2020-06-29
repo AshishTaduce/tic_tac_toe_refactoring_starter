@@ -63,8 +63,7 @@ void gameReset() {
   ];
   currentPlayer = token.x;
   isEnd = true;
-  playerScore= 0;
-  computerScore = 0;
+
   scoreUpdated = false;
 }
 

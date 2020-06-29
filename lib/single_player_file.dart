@@ -39,9 +39,6 @@ class _OneBoxState extends State<OneBox> with SingleTickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
-    //CurvedAnimation animation1 = CurvedAnimation(parent: controller, curve: Curves.easeInExpo);
-    CurvedAnimation animation =
-        CurvedAnimation(parent: controller, curve: Curves.bounceOut);
     return GestureDetector(
       onTap: () {
         widget.onPressed();
@@ -51,12 +48,12 @@ class _OneBoxState extends State<OneBox> with SingleTickerProviderStateMixin {
         duration: Duration(seconds: 1),
         alignment: Alignment.center,
         child: widget.buttonChild,
-        margin: EdgeInsets.all(4),
+        margin: EdgeInsets.all(2),
         decoration: BoxDecoration(
           color: widget.colors,
           border: Border.all(
-            color: Colors.white10,
-            width: 14,
+            color: Colors.white,
+            width: 10,
           ),
           borderRadius: BorderRadius.all(
             Radius.circular(16),
@@ -86,7 +83,8 @@ class _TicTacToePageState extends State<TicTacToePage>
       if (status == AnimationStatus.completed) {
         controller.reverse();
         setState(() {});
-      } else if (status == AnimationStatus.dismissed) {
+      }
+      else if (status == AnimationStatus.dismissed) {
         controller.forward();
         setState(() {});
       }
@@ -119,18 +117,18 @@ class _TicTacToePageState extends State<TicTacToePage>
         : Colors.transparent;
   }
 
-  //TODO make this work, 
-bool isPlaying = false;
+  bool isPlaying = false;
+
   Widget singleExpandedBox(int row, int col) {
     return Expanded(
       child: OneBox(
         buttonChild: drawIcon(board[row][col]),
         colors: getColor(row, col),
         onPressed: () async {
-            if (isPlaying == false) {
-              isPlaying = true;
-              currentPlayer = token.x;
-              updateBox(row, col);
+          if (isPlaying == false) {
+            isPlaying = true;
+            currentPlayer = token.x;
+            updateBox(row, col);
 
             if (!winnerCheck(board, currentPlayer) && !fullBoard(board)) {
               Future.delayed(const Duration(milliseconds: 1500), () {
@@ -191,206 +189,196 @@ bool isPlaying = false;
       backgroundColor: Color(0xFFD6AA7C),
       body: Stack(
         children: <Widget>[
-          (AnimatedBackground()),
           Positioned.fill(
-              bottom: 0,
-              child:AnimatedWave(
-                height: 100,
-                speed: 1.0,
-              )),
-          Positioned.fill(
-              bottom: 0,
-              child:AnimatedWave(
-                height: 120,
-                speed: 0.9,
-                offset: pi/2,
-              )),
-          Positioned.fill(
-              bottom: 0,
-              child:AnimatedWave(
-                height: 75,
-                speed: 0.5,
-                offset: pi/4,
-              )),
-          Positioned.fill(
-            top: 0,
             child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.transparent
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: widget.playerName == null
-                            ? Text(
-                          'Player',
-                          style: TextStyle(
-                              fontSize: 32,
-                              fontFamily: 'QuickSand',
-                              color: Colors.white),
-                          textAlign: TextAlign.left,
-                          maxLines: 1,
-                        )
-                        : Text(
-                        '${widget.playerName}',
-                        style: TextStyle(
-                        fontSize: 32,
-                        fontFamily: 'QuickSand',
-                        color: Colors.white),
-                        textAlign: TextAlign.left,
-                        maxLines: 1,
-                        ),
-                      ),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Expanded(
-                              child: Container(
-                                decoration: new BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: new BorderRadius.only(
-                                      bottomLeft: const Radius.circular(40.0),
-                                      topLeft: const Radius.circular(40.0),
-                                    ),
-                                    border: Border.all(
-                                        color: Colors.white
-                                    )
-                                ),
-                                child: Text('$playerScore',
-                                  style: TextStyle(
-                                      fontSize: 40,
-                                      fontFamily: 'QuickSand',
-                                      color: Colors.white),textAlign: TextAlign.center,),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                decoration: new BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: new BorderRadius.only(
-                                      bottomRight: const Radius.circular(40.0),
-                                      topRight: const Radius.circular(40.0),
-                                    ),
-                                    border: Border.all(
-                                        color: Colors.white
-                                    )
-                                ),
-                                child: Text('$computerScore',
-                                  style: TextStyle(
-                                      fontSize: 40,
-                                      fontFamily: 'QuickSand',
-                                      color: Colors.white),textAlign: TextAlign.center,),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          'Bots',
-                          style: TextStyle(
-                              fontSize: 32,
-                              fontFamily: 'QuickSand',
-                              color: Colors.white),
-                          textAlign: TextAlign.right,
-                        ),
-                      ),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: [
+                      0.2,
+                      0.8
                     ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    alignment: Alignment.topCenter,
-                    child: winnerCheck(board, currentPlayer)
-                        ? ScaleTransition(
-                      scale: Tween(begin: 1.5, end: 2.5).animate(controller),
-                      child: Text(
-                        "${getCurrentStatus(board)}",
-                        style: TextStyle(
-                            fontSize: 24,
-                            color: winnerCheck(board, currentPlayer)
-                                ? ColorTween(
-                                begin: Colors.white,
-                                end: Colors.orange)
-                                .transform(controller.value)
-                                : Colors.white,
-                            fontFamily: 'Quicksand'),
-                      ),
-                    )
-                        : Text(
-                      "${getCurrentStatus(board)}",
-                      style: TextStyle(
-                          fontSize: 24,
-                          color: winnerCheck(board, currentPlayer)
-                              ? ColorTween(
-                              begin: Colors.white, end: Colors.orange)
-                              .transform(controller.value)
-                              : Colors.white,
-                          fontFamily: 'Quicksand'),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 7,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border.all(width: 16, color: Colors.transparent)),
-                    margin: EdgeInsets.all(6),
-                    child: Column(
+                    colors: [Colors.pink, Colors.purple,]),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(
+                    flex: 3,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        expandedRow(0),
-                        expandedRow(1),
-                        expandedRow(2),
+                        Expanded(
+                          child: widget.playerName == null
+                              ? Text(
+                                  'Player',
+                                  style: TextStyle(
+                                      fontSize: 32,
+                                      fontFamily: 'QuickSand',
+                                      color: Colors.white),
+                                  textAlign: TextAlign.left,
+                                  maxLines: 1,
+                                )
+                              : Text(
+                                  '${widget.playerName}',
+                                  style: TextStyle(
+                                      fontSize: 32,
+                                      fontFamily: 'QuickSand',
+                                      color: Colors.white),
+                                  textAlign: TextAlign.left,
+                                  maxLines: 1,
+                                ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: Container(
+                                  decoration: new BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: new BorderRadius.only(
+                                        bottomLeft: const Radius.circular(40.0),
+                                        topLeft: const Radius.circular(40.0),
+                                      ),
+                                      border: Border.all(color: Colors.white)),
+                                  child: Text(
+                                    '$playerScore',
+                                    style: TextStyle(
+                                        fontSize: 40,
+                                        fontFamily: 'QuickSand',
+                                        color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  decoration: new BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: new BorderRadius.only(
+                                        bottomRight:
+                                            const Radius.circular(40.0),
+                                        topRight: const Radius.circular(40.0),
+                                      ),
+                                      border: Border.all(color: Colors.white)),
+                                  child: Text(
+                                    '$computerScore',
+                                    style: TextStyle(
+                                        fontSize: 40,
+                                        fontFamily: 'QuickSand',
+                                        color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            'Bots',
+                            style: TextStyle(
+                                fontSize: 32,
+                                fontFamily: 'QuickSand',
+                                color: Colors.white),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: SizedBox(
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.refresh,
-                              color: Colors.white,
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      child: winnerCheck(board, currentPlayer)
+                          ? ScaleTransition(
+                              scale: Tween(begin: 1.5, end: 2.5)
+                                  .animate(controller),
+                              child: Text(
+                                "${getCurrentStatus(board)}",
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    color: winnerCheck(board, currentPlayer)
+                                        ? ColorTween(
+                                                begin: Colors.white,
+                                                end: Colors.orange)
+                                            .transform(controller.value)
+                                        : Colors.white,
+                                    fontFamily: 'Quicksand'),
+                              ),
+                            )
+                          : Text(
+                              "${getCurrentStatus(board)}",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: winnerCheck(board, currentPlayer)
+                                      ? ColorTween(
+                                              begin: Colors.white,
+                                              end: Colors.orange)
+                                          .transform(controller.value)
+                                      : Colors.white,
+                                  fontFamily: 'Quicksand'),
                             ),
-                            iconSize: 72,
-                            color: Color(0xFF848AC1),
-                            onPressed: () {
-                              gameReset();
-                              setState(() {});
-                            },
+                    ),
+                  ),
+                  Expanded(
+                    flex: 7,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border:
+                              Border.all(width: 16, color: Colors.transparent)),
+                      margin: EdgeInsets.all(6),
+                      child: Column(
+                        children: <Widget>[
+                          expandedRow(0),
+                          expandedRow(1),
+                          expandedRow(2),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: SizedBox(
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.refresh,
+                                color: Colors.white,
+                              ),
+                              iconSize: 72,
+                              color: Color(0xFF848AC1),
+                              onPressed: () {
+                                gameReset();
+                                setState(() {});
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: SizedBox(),
-                        flex: 1,
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                        Expanded(
+                          child: SizedBox(),
+                          flex: 1,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),)
+          )
         ],
       ),
     );
@@ -400,7 +388,7 @@ bool isPlaying = false;
     if (legitMove(board[r][c])) {
       if (currentPlayer == token.x) {
         board[r][c] = token.x;
-        isPlaying=true;
+        isPlaying = true;
         setState(() {});
       }
     }
@@ -408,6 +396,10 @@ bool isPlaying = false;
 
   void dispose() {
     controller.dispose();
+    gameReset();
+    playerScore = 0;
+    computerScore = 0;
     super.dispose();
+
   }
 }

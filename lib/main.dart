@@ -8,12 +8,24 @@ import 'package:tic_tac_toe_starter/custom_widgets.dart';
 void main() {
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: FrontPage(),
     ),
   );
 }
 
+Route _createRoute(String playerName) {
+  return PageRouteBuilder(
 
+    pageBuilder: (context, animation, secondaryAnimation) => TicTacToePage(playerName),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: child,
+      );
+    },
+  );
+}
 
 class FrontPage extends StatefulWidget {
   @override
@@ -137,7 +149,7 @@ class _FrontPageState extends State<FrontPage> {
                                             cursorColor: Colors.white,
                                             cursorRadius:
                                             Radius.circular(8),
-                                            cursorWidth: 32,
+                                            cursorWidth: 8,
                                             autofocus: true,
                                             controller: _controller,
                                             // ...
@@ -154,6 +166,7 @@ class _FrontPageState extends State<FrontPage> {
                                           color: Colors.white,
                                         ),
                                         onPressed: () {
+
                                           Navigator.of(context).push(_createRoute(_controller.text));
                                         },
                                       ),
@@ -231,8 +244,9 @@ class _FrontPageState extends State<FrontPage> {
                                 child: Container(
                                     width: 50,
                                     height: 50,
-                                    child: Image.asset(
-                                        'assets/mclaren_logo_white.png')),
+                                    child: FlutterLogo(
+                                      colors: Colors.pink,
+                                    )),
                               ),
                               Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +258,7 @@ class _FrontPageState extends State<FrontPage> {
                                           color: Colors.white, fontSize: 16.0),
                                     ),
                                     Text(
-                                      'Team Mclaren',
+                                      'Flutter',
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 22.0),
                                     ),
@@ -261,23 +275,4 @@ class _FrontPageState extends State<FrontPage> {
       ),
     );
   }
-}
-
-Route _createRoute(String playerName) {
-  return PageRouteBuilder(
-
-    pageBuilder: (context, animation, secondaryAnimation) => TicTacToePage(playerName),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      var begin = Offset(0.0, 1.0);
-      var end = Offset.zero;
-      var curve = Curves.ease;
-
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-      return FadeTransition(
-        opacity: animation,
-        child: child,
-      );
-    },
-  );
 }
